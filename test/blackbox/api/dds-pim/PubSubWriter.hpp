@@ -295,7 +295,8 @@ public:
                 datawriter_ = publisher_->create_datawriter(topic_, datawriter_qos_, &listener_);
                 if (datawriter_ != nullptr)
                 {
-                    std::cout << "Created datawriter " << datawriter_->guid() << " for topic " <<
+                    datawriter_guid_ = datawriter_->guid();
+                    std::cout << "Created datawriter " << datawriter_guid_ << " for topic " <<
                         topic_name_ << std::endl;
                     initialized_ = datawriter_->is_enabled();
                     return;
@@ -913,6 +914,13 @@ public:
         return *this;
     }
 
+    PubSubWriter& endpoint_userData(
+            std::vector<eprosima::fastrtps::rtps::octet> user_data)
+    {
+        datawriter_qos_.user_data() = user_data;
+        return *this;
+    }
+
     PubSubWriter& user_data_max_size(
             uint32_t max_user_data)
     {
@@ -999,6 +1007,11 @@ public:
     eprosima::fastrtps::rtps::GUID_t participant_guid()
     {
         return participant_guid_;
+    }
+
+    eprosima::fastrtps::rtps::GUID_t datawriter_guid()
+    {
+        return datawriter_guid_;
     }
 
     bool update_partition(
@@ -1288,6 +1301,7 @@ private:
     eprosima::fastdds::dds::DataWriterQos datawriter_qos_;
     std::string topic_name_;
     eprosima::fastrtps::rtps::GUID_t participant_guid_;
+    eprosima::fastrtps::rtps::GUID_t datawriter_guid_;
     bool initialized_;
     std::mutex mutexDiscovery_;
     std::condition_variable cv_;
