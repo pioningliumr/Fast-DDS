@@ -117,7 +117,7 @@ bool EDP::newLocalReaderProxyData(
                 rpd->type_id(att.type_id);
                 rpd->type(att.type);
                 rpd->type_information(att.type_information);
-                rpd->m_qos = rqos;
+                rpd->m_qos.setQos(rqos, true);
                 rpd->userDefinedId(reader->getAttributes().getUserDefinedID());
 #if HAVE_SECURITY
                 if (mp_RTPSParticipant->is_secure())
@@ -231,7 +231,7 @@ bool EDP::newLocalWriterProxyData(
                 wpd->type(att.type);
                 wpd->type_information(att.type_information);
                 wpd->typeMaxSerialized(writer->getTypeMaxSerialized());
-                wpd->m_qos = wqos;
+                wpd->m_qos.setQos(wqos, true);
                 wpd->userDefinedId(writer->getAttributes().getUserDefinedID());
                 wpd->persistence_guid(writer->getAttributes().persistence_guid);
 #if HAVE_SECURITY
