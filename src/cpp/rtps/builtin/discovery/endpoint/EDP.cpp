@@ -131,7 +131,7 @@ bool EDP::newLocalReaderProxyData(
                     rpd->security_attributes_ = 0UL;
                     rpd->plugin_security_attributes_ = 0UL;
                 }
-#endif
+#endif // if HAVE_SECURITY
                 if (att.auto_fill_type_information)
                 {
                     // TypeInformation, TypeObject and TypeIdentifier
@@ -246,7 +246,7 @@ bool EDP::newLocalWriterProxyData(
                     wpd->security_attributes_ = 0UL;
                     wpd->plugin_security_attributes_ = 0UL;
                 }
-#endif
+#endif // if HAVE_SECURITY
 
                 if (att.auto_fill_type_information)
                 {
@@ -491,7 +491,7 @@ bool EDP::unpairWriterProxy(
 #if HAVE_SECURITY
             mp_RTPSParticipant->security_manager().remove_writer(reader_guid,
                     participant_guid, writer_guid);
-#endif
+#endif // if HAVE_SECURITY
 
             //MATCHED AND ADDED CORRECTLY:
             if ((*rit)->getListener() != nullptr)
@@ -528,7 +528,7 @@ bool EDP::unpairReaderProxy(
 #if HAVE_SECURITY
             mp_RTPSParticipant->security_manager().remove_reader(writer_guid,
                     participant_guid, reader_guid);
-#endif
+#endif // if HAVE_SECURITY
             //MATCHED AND ADDED CORRECTLY:
             if ((*wit)->getListener() != nullptr)
             {
@@ -621,7 +621,7 @@ bool EDP::validMatching(
 
 #if HAVE_SECURITY
     // TODO: Check EndpointSecurityInfo
-#endif
+#endif // if HAVE_SECURITY
 
     //Partition check:
     bool matched = false;
@@ -820,7 +820,7 @@ bool EDP::validMatching(
     }
 #if HAVE_SECURITY
     // TODO: Check EndpointSecurityInfo
-#endif
+#endif // if HAVE_SECURITY
 
     //Partition check:
     bool matched = false;
@@ -915,7 +915,9 @@ bool EDP::pairingReader(
 #else
                 if (R->matched_writer_add(*wdatait))
                 {
-                    logInfo(RTPS_EDP_MATCH, "WP:" << wdatait->guid() << " match R:" << R->getGuid() << ". RLoc:" << wdatait->remote_locators());
+                    logInfo(RTPS_EDP_MATCH,
+                            "WP:" << wdatait->guid() << " match R:" << R->getGuid() << ". RLoc:" <<
+                                        wdatait->remote_locators());
                     //MATCHED AND ADDED CORRECTLY:
                     if (R->getListener() != nullptr)
                     {
@@ -929,7 +931,7 @@ bool EDP::pairingReader(
                         R->getListener()->onReaderMatched(R, sub_info);
                     }
                 }
-#endif
+#endif // if HAVE_SECURITY
             }
             else
             {
@@ -940,7 +942,7 @@ bool EDP::pairingReader(
 #if HAVE_SECURITY
                     mp_RTPSParticipant->security_manager().remove_writer(reader_guid, participant_guid,
                             wdatait->guid());
-#endif
+#endif // if HAVE_SECURITY
 
                     //MATCHED AND ADDED CORRECTLY:
                     if (R->getListener() != nullptr)
@@ -997,7 +999,9 @@ bool EDP::pairingWriter(
 #else
                 if (W->matched_reader_add(*rdatait))
                 {
-                    logInfo(RTPS_EDP_MATCH, "RP:" << rdatait->guid() << " match W:" << W->getGuid() << ". WLoc:" << rdatait->remote_locators());
+                    logInfo(RTPS_EDP_MATCH,
+                            "RP:" << rdatait->guid() << " match W:" << W->getGuid() << ". WLoc:" <<
+                                        rdatait->remote_locators());
                     //MATCHED AND ADDED CORRECTLY:
                     if (W->getListener() != nullptr)
                     {
@@ -1012,7 +1016,7 @@ bool EDP::pairingWriter(
                         W->getListener()->onWriterMatched(W, pub_info);
                     }
                 }
-#endif
+#endif // if HAVE_SECURITY
             }
             else
             {
@@ -1021,7 +1025,7 @@ bool EDP::pairingWriter(
                 {
 #if HAVE_SECURITY
                     mp_RTPSParticipant->security_manager().remove_reader(W->getGuid(), participant_guid, reader_guid);
-#endif
+#endif // if HAVE_SECURITY
                     //MATCHED AND ADDED CORRECTLY:
                     if (W->getListener() != nullptr)
                     {
@@ -1075,7 +1079,9 @@ bool EDP::pairing_reader_proxy_with_any_local_writer(
 #else
                 if ((*wit)->matched_reader_add(*rdata))
                 {
-                    logInfo(RTPS_EDP_MATCH, "RP:" << rdata->guid() << " match W:" << (*wit)->getGuid() << ". RLoc:" << rdata->remote_locators());
+                    logInfo(RTPS_EDP_MATCH,
+                            "RP:" << rdata->guid() << " match W:" << (*wit)->getGuid() << ". RLoc:" <<
+                                        rdata->remote_locators());
                     //MATCHED AND ADDED CORRECTLY:
                     if ((*wit)->getListener() != nullptr)
                     {
@@ -1089,7 +1095,7 @@ bool EDP::pairing_reader_proxy_with_any_local_writer(
                         (*wit)->getListener()->onWriterMatched((*wit), pub_info);
                     }
                 }
-#endif
+#endif // if HAVE_SECURITY
             }
             else
             {
@@ -1099,7 +1105,7 @@ bool EDP::pairing_reader_proxy_with_any_local_writer(
 #if HAVE_SECURITY
                     mp_RTPSParticipant->security_manager().remove_reader(
                         (*wit)->getGuid(), participant_guid, reader_guid);
-#endif
+#endif // if HAVE_SECURITY
                     //MATCHED AND ADDED CORRECTLY:
                     if ((*wit)->getListener() != nullptr)
                     {
@@ -1221,7 +1227,7 @@ bool EDP::pairing_remote_reader_with_local_writer_after_security(
     return pairing_remote_reader_with_local_builtin_writer_after_security(local_writer, remote_reader_data);
 }
 
-#endif
+#endif // if HAVE_SECURITY
 
 bool EDP::pairing_writer_proxy_with_any_local_reader(
         const GUID_t& participant_guid,
@@ -1255,7 +1261,9 @@ bool EDP::pairing_writer_proxy_with_any_local_reader(
 #else
                 if ((*rit)->matched_writer_add(*wdata))
                 {
-                    logInfo(RTPS_EDP_MATCH, "WP:" << wdata->guid() << " match R:" << (*rit)->getGuid() << ". WLoc:" << wdata->remote_locators());
+                    logInfo(RTPS_EDP_MATCH,
+                            "WP:" << wdata->guid() << " match R:" << (*rit)->getGuid() << ". WLoc:" <<
+                                        wdata->remote_locators());
                     //MATCHED AND ADDED CORRECTLY:
                     if ((*rit)->getListener() != nullptr)
                     {
@@ -1270,7 +1278,7 @@ bool EDP::pairing_writer_proxy_with_any_local_reader(
                         (*rit)->getListener()->onReaderMatched((*rit), sub_info);
                     }
                 }
-#endif
+#endif // if HAVE_SECURITY
             }
             else
             {
@@ -1279,7 +1287,7 @@ bool EDP::pairing_writer_proxy_with_any_local_reader(
                 {
 #if HAVE_SECURITY
                     mp_RTPSParticipant->security_manager().remove_writer(readerGUID, participant_guid, writer_guid);
-#endif
+#endif // if HAVE_SECURITY
                     //MATCHED AND ADDED CORRECTLY:
                     if ((*rit)->getListener() != nullptr)
                     {
@@ -1402,7 +1410,7 @@ bool EDP::pairing_remote_writer_with_local_reader_after_security(
     return pairing_remote_writer_with_local_builtin_reader_after_security(local_reader, remote_writer_data);
 }
 
-#endif
+#endif // if HAVE_SECURITY
 
 bool EDP::checkTypeIdentifier(
         const WriterProxyData* wdata,
@@ -1593,6 +1601,6 @@ const fastdds::dds::PublicationMatchedStatus& EDP::update_publication_matched_st
     return *status;
 }
 
-}
+} // namespace rtps
 } /* namespace rtps */
 } /* namespace eprosima */
