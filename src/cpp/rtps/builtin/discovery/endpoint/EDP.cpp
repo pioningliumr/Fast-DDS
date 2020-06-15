@@ -917,7 +917,7 @@ bool EDP::pairingReader(
                 {
                     logInfo(RTPS_EDP_MATCH,
                             "WP:" << wdatait->guid() << " match R:" << R->getGuid() << ". RLoc:" <<
-                                        wdatait->remote_locators());
+                            wdatait->remote_locators());
                     //MATCHED AND ADDED CORRECTLY:
                     if (R->getListener() != nullptr)
                     {
@@ -1001,7 +1001,7 @@ bool EDP::pairingWriter(
                 {
                     logInfo(RTPS_EDP_MATCH,
                             "RP:" << rdatait->guid() << " match W:" << W->getGuid() << ". WLoc:" <<
-                                        rdatait->remote_locators());
+                            rdatait->remote_locators());
                     //MATCHED AND ADDED CORRECTLY:
                     if (W->getListener() != nullptr)
                     {
@@ -1081,7 +1081,7 @@ bool EDP::pairing_reader_proxy_with_any_local_writer(
                 {
                     logInfo(RTPS_EDP_MATCH,
                             "RP:" << rdata->guid() << " match W:" << (*wit)->getGuid() << ". RLoc:" <<
-                                        rdata->remote_locators());
+                            rdata->remote_locators());
                     //MATCHED AND ADDED CORRECTLY:
                     if ((*wit)->getListener() != nullptr)
                     {
@@ -1263,7 +1263,7 @@ bool EDP::pairing_writer_proxy_with_any_local_reader(
                 {
                     logInfo(RTPS_EDP_MATCH,
                             "WP:" << wdata->guid() << " match R:" << (*rit)->getGuid() << ". WLoc:" <<
-                                        wdata->remote_locators());
+                            wdata->remote_locators());
                     //MATCHED AND ADDED CORRECTLY:
                     if ((*rit)->getListener() != nullptr)
                     {
